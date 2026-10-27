@@ -15,6 +15,10 @@
     <a href="{{ route('kali') }}">Perkalian</a>
 
     <a href="{{ url()->previous() }}">Kembali</a>
+
+    <main>
+        @yield('content')
+    </main>
 </body>
 
 </html>
