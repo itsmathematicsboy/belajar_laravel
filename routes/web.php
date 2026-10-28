@@ -27,11 +27,13 @@ Route::get('/bagi', [BelajarController::class, 'bagi'])->name('bagi');
 Route::post('/actionBagi', [BelajarController::class, 'actionBagi'])->name('actionBagi');
 
 // prefix
-Route::prefix('admin')->name('admin.')->group(function(){
+Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [\App\Http\Controllers\LoginController::class, 'login']);
     Route::post('/actionLogin', [\App\Http\Controllers\LoginController::class, 'actionLogin'])->name('actionLogin');
 
     Route::resource('dashboard', DashboardController::class);
     Route::resource('user', UserController::class);
-});
 
+    Route::get('/settings', [\App\Http\Controllers\SettingController::class, 'index'])->name('settings');
+    Route::post('/settings', [\App\Http\Controllers\SettingController::class, 'update'])->name('settings.update');
+});

@@ -64,7 +64,7 @@
         <!-- END: Page Header Banner -->
 
         <!-- START: Blank Page Content Area -->
-        <div class="card p-4 border-light shadow-sm text-center">
+        <div class="card p-4 border-light shadow-sm">
             @yield('content')
         </div>
         <!-- END: Blank Page Content Area -->
@@ -77,7 +77,7 @@
                     <i class="bi bi-asterisk"></i> Spark Admin
                 </span>
                 <span class="footer-separator">|</span>
-                <span class="footer-copy">&copy; {{  date('Y')  }} Made with <i class="bi bi-heart-fill text-danger footer-heart"></i> by<a
+                <span class="footer-copy">&copy; {{ date('Y')  }} Made with <i class="bi bi-heart-fill text-danger footer-heart"></i> by<a
                         href="https://sparkadminpro.gumroad.com/" target="_blank">Pras</a>• Distributed by <a
                         href="https://www.themewagon.com/" target="_blank">ThemeWagon</a> </span>
             </div>
