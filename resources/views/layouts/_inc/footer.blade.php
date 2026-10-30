@@ -14,19 +14,19 @@
                 </p>
                 <!-- Social Icons -->
                 <div class="d-flex align-items-center gap-2 mb-4">
-                    <a aria-label="Shopee" class="btn btn-sm btn-dark rounded-circle border border-secondary text-white" href="{{  $settings['url_shopee'] ??   }}">
+                    <a aria-label="Shopee" class="btn btn-sm btn-dark rounded-circle border border-secondary text-white" href="{{  $settings['url_shopee'] ??  "" }}">
                         <i class="bi bi-bag"></i>
                     </a>
-                    <a aria-label="Facebook" class="btn btn-sm btn-dark rounded-circle border border-secondary text-white" href=" {{  $settings['url_facebook'] ??   }}">
+                    <a aria-label="Facebook" class="btn btn-sm btn-dark rounded-circle border border-secondary text-white" href=" {{  $settings['url_facebook'] ?? ""  }}">
                         <i class="bi bi-facebook"></i>
                     </a>
-                    <a aria-label="Instagram" class="btn btn-sm btn-dark rounded-circle border border-secondary text-white" href="{{  $settings['url_instagram'] ??   }}">
+                    <a aria-label="Instagram" class="btn btn-sm btn-dark rounded-circle border border-secondary text-white" href="{{  $settings['url_instagram'] ?? ""  }}">
                         <i class="bi bi-instagram"></i>
                     </a>
-                    <a aria-label="YouTube" class="btn btn-sm btn-dark rounded-circle border border-secondary text-white" href="{{  $settings['urL_youtube'] ??   }}">
+                    <a aria-label="YouTube" class="btn btn-sm btn-dark rounded-circle border border-secondary text-white" href="{{  $settings['urL_youtube'] ?? ""  }}">
                         <i class="bi bi-youtube"></i>
                     </a>
-                    <a aria-label="TikTok" class="btn btn-sm btn-dark rounded-circle border border-secondary text-white" href="{{  $settings['url_tiktok'] ??   }}">
+                    <a aria-label="TikTok" class="btn btn-sm btn-dark rounded-circle border border-secondary text-white" href="{{  $settings['url_tiktok'] ??  "" }}">
                         <i class="bi bi-tiktok"></i>
                     </a>
                 </div>
@@ -87,14 +87,14 @@
                         <i class="bi bi-envelope text-primary fs-5"></i>
                         <div>
                             <div class="text-secondary" style="font-size: 0.75rem;">Upload file</div>
-                            <div class="fw-semibold">{{ $settings['email_upload'] ? ''  }}</div>
+                            <div class="fw-semibold">{{ $settings['email_upload'] ?? ""  }}</div>
                         </div>
                     </div>
                     <div class="d-flex align-items-center gap-2 mb-3 text-white">
                         <i class="bi bi-envelope-open text-warning fs-5"></i>
                         <div>
                             <div class="text-secondary" style="font-size: 0.75rem;">Order custom</div>
-                            <div class="fw-semibold">{{ $settings['email_order'] ??   }}</div>
+                            <div class="fw-semibold">{{ $settings['email_order'] ?? ""  }}</div>
                         </div>
                     </div>
                 </div>
