@@ -41,15 +41,20 @@ logo, kontak dan informasi profil')
             </div>
             <div class="mb-3">
                 <label for="" class="form-label">Tagline Website</label>
-                <input type="text" class="form-control" name="site_tagline" value="">
+                <input type="text" class="form-control" name="site_tagline" value="{{  old('site_tagline', $setting['site_tagline']->value)  }}">
             </div>
             <div class="mb-3">
                 <label for="" class="form-label">Deskripsi Singkat Website</label>
-                <textarea class="form-control" name="site_description" value="" id="" cols="30" rows="10"></textarea>
+                <textarea class="form-control" name="site_description" value="" id="" cols="30" rows="10">
+                {{ old('site_description', $setting['site_description']->value)  }}
+                </textarea>
             </div>
             <div class="mb-3">
                 <label for="" class="form-label">Logo Utama Website</label>
                 <input type="file" class="form-control" name="site_logo" value="">
+            </div>
+            <div>
+                <img width="100" src="{{ asset('storage/'.$setting['site_logo']->value) }}" alt="Site Logo">
             </div>
         </div>
 
@@ -58,19 +63,19 @@ logo, kontak dan informasi profil')
 
             <div class="mb-3">
                 <label for="" class="form-label">Nomor Telepon Utama</label>
-                <input type="text" class="form-control" name="phone" value="">
+                <input type="text" class="form-control" name="phone" value="{{ old('phone', $setting['phone']->value) }}">
             </div>
             <div class="mb-3">
                 <label for="" class="form-label">Email Upload</label>
-                <input type="text" class="form-control" name="email_upload" value="">
+                <input type="text" class="form-control" name="email_upload" value="{{ old('email_upload', $setting['email_upload']->value) }}">
             </div>
             <div class="mb-3">
                 <label for="" class="form-label">Email Order</label>
-                <input type="text" class="form-control" name="email_order" value="">
+                <input type="text" class="form-control" name="email_order" value="{{ old('email_order', $setting['email_order']->value) }}">
             </div>
             <div class="mb-3">
                 <label for="" class="form-label">Alamat</label>
-                <textarea name="address" id="" cols="30" rows="10" class="form-control"></textarea>
+                <textarea name="address" id="" cols="30" rows="10" class="form-control"> {{ old('address', $setting['address']->value)  }}</textarea>
             </div>
         </div>
         <div class="tab-pane fade" id="messages-tab-pane" role="tabpanel" aria-labelledby="messages-tab" tabindex="0">
