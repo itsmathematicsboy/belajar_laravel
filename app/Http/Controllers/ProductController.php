@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -13,8 +15,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('category')->orderBy('id', 'DESC')->get();
-        return view('admin.product.index', compact('products'));
+        $title = "Manajemen Produk || PPKD Sticker";
+        $products = Product::with('category')->get();
+        $category = Category::with('products')->get();
+        return view('admin.product.index', compact('title','products'));
     }
 
     /**
@@ -22,8 +26,9 @@ class ProductController extends Controller
      */
     public function create()
     {
+        $title = "Tambah Produk || PPKD Sticker";
         $categories = Category::all();
-        return view('admin.product.create', compact('categories'));
+        return view('admin.product.create', compact('title','categories'));
     }
 
     /**
@@ -32,14 +37,24 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
-        $request->validate([
+        $validated = $request->validate([
             'category_id'=> 'required|exists:categories_id',
             'image' => 'nullable|image|mimes:png,jpg,jpeg,gif|max:2640',
             'name' => 'required|string|max:60',
-            'stock'=>'required|integer',
-            'price' => 'required|integer'
+            // 'stock'=>'required|integer',
+            'price' => 'required|integer',
+            'slug' => 'nullable|string|unique:products,slug',
+            'price_art_cartoon'=> 'nullable|numeric',
+            'price_art_paper'=> 'nullable|numeric',
+            'price_art_hvs'=> 'nullable|numeric',
+            'price_art_dof'=> 'nullable|numeric',
+            'price_art_glossy'=> 'nullable|numeric',
+            'cutting_price'=>'nullable|numeric',
+            'brief_description'=>'nullable|string',
+            'description'=>'nullable|string',
         ]);
 
+        $validated['slug'] = $validated['slug'] ? Str::slug($validated['slug']) : Str::slug($validated['name']);
         $imagePath = null;
         if($request->image){
             $imagePath = $request->file('image')->store('product', 'public');
@@ -49,8 +64,15 @@ class ProductController extends Controller
             'category_id' => $request->category_id,
             'image' => $request->$imagePath,
             'name' => $request->name,
-            'stock' => $request->stock,
-            'price' => $request->price
+            // 'stock' => $request->stock,
+            'price' => $request->price,
+            'price_art_cartoon' => $request->price_art_cartoon,
+            'price_art_paper' => $request->price_art_paper,
+            'price_hvs'=>$request->price_hvs,
+            'price_dof'=>$request->price_glossy,
+            'cutting_price'=>$request->cutting_price,
+            'brief_description'=>$request->brief_description,
+            'description'=>$request->description
         ]);
         return redirect()->route('admin.product.index')
         ->with('success', 'Produk berhasil ditambahkan');
@@ -75,9 +97,11 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Product $product)
     {
-        //
+        if($request->hasFile('img')){
+            Storage::disk('public')->delete($product->img);
+        }
     }
 
     /**
@@ -86,5 +110,12 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         //
+        $product = Product::find($id);
+
+        if($product->img){
+            Storage::disk('public')->delete($product->img);
+        }
+
+        $product->delete();
     }
 }

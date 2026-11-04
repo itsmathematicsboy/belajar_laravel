@@ -3,7 +3,7 @@
 @section('subtitle', 'Pengelompokkan Produk')
 @section('content')
     <div align="right">
-        <a href="{{ route('admin.product    .create') }}" class="btn-table-action">
+        <a href="{{ route('admin.product.create') }}" class="btn-table-action">
             <i class="bi bi-person-add"></i> Tambah Produk
         </a>
     </div>
@@ -12,10 +12,11 @@
             <thead>
                 <tr>
                     <th>No</th>
+                    <th>Image</th>
                     <th>Kategori</th>
                     <th>Nama Produk</th>
-                    <th>Image</th>
                     <th>Stock</th>
+                    <th>Harga</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -23,11 +24,16 @@
                 @foreach ($products as $item)
                 <tr>
                     <td>{{ $loop->iteration  }}</td>
+                    <td>
+                        @if ($item->image !== null)
+                            <img src="{{ asset('storage/' . $item->image) }}" width="100"
+                            alt="{{ $item->name ?? '' }}">
+                        @else
+                            <span class="text-muted">Gambar tidak ditemukan</span>
+                        @endif
+                    </td>
                     <td>{{ $item->category->name  }}</td>
                     <td>{{ $item->name  }}</td>
-                    <td>
-                        <img src="" alt="">
-                    </td>
                     <td>{{ $item->stock }}</td>
                     <td>Rp. {{ number_format($item->price, 2, ',', '.')  }}</td>
                     <td>

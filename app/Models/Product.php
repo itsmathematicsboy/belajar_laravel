@@ -3,7 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+use App\Models\Category;
 
 class Product extends Model
 {
@@ -12,6 +13,6 @@ class Product extends Model
     // many to one
     public function category(){
         //
-        return $this->BelongsTo(category::class);
+        return $this->belongsTo(Category::class);
     }
 }
