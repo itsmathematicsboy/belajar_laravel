@@ -1,13 +1,14 @@
 <?php
 
 use App\Http\Controllers\BelajarController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 
-Route::get('/', [HomeController::class, 'index']);
+
 
 
 // Route::get('route', [class, 'function']);
@@ -40,3 +41,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/settings', [\App\Http\Controllers\SettingController::class, 'update'])->name('settings.update');
 
 });
+
+Route::get('/', [HomeController::class, 'index']);
+Route::get('/category/{slug}', [\App\Http\Controllers\CatalogController::class], 'category')->name('category.show');

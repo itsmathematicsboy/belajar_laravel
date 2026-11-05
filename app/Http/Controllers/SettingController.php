@@ -26,6 +26,7 @@ class SettingController extends Controller
             'site_logo' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:2048',
             'phone' => 'nullable|string|max:100',
             'email_upload' => 'nullable|email|max:255',
+            'email_order' => 'nullable|email|max:255',
             'address' => 'nullable|string|max:1000',
 
             'url_shopee' => 'nullable|url|max:255',
