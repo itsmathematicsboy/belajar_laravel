@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -42,6 +43,12 @@ class ProductController extends Controller
             'image' => 'nullable|image|mimes:png,jpg,jpeg,gif|max:2640',
             'name' => 'required|string|max:60',
             // 'stock'=>'required|integer',
+
+            // validasi product image
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:png,jpg,jpeg,webp|max:2048',
+            'alt' => 'nullable|array',
+            'alt.*' => 'nullable|array|max:255',
             'price' => 'required|integer',
             'slug' => 'nullable|string|unique:products,slug',
             'price_art_cartoon'=> 'nullable|numeric',
@@ -54,7 +61,30 @@ class ProductController extends Controller
             'description'=>'nullable|string',
         ]);
 
+        DB::transaction(function() use($request, $validated){
+            $product = Product::create([
+                'category_id' =>$request->$validated['category_id'],
+                'name'=>$request->$validated['name'],
+            ]);
+
+            if ($request->hasFile('images')){
+                $imageData = [];
+
+                foreach($request->file('images') as $key => $file){
+                    $path = $file->store('product', 'public');
+
+                    $imageData[] = [
+                        'path'=>$path,
+                        'alt'=> $request->input('alt.{$key}') ?? $product->name,
+                        'sort_order'=>$key + 1,
+                    ];
+                }
+                $product->images()->createMany($imageData);
+            }
+        });
+
         $validated['slug'] = $validated['slug'] ? Str::slug($validated['slug']) : Str::slug($validated['name']);
+
         $imagePath = null;
         if($request->image){
             $imagePath = $request->file('image')->store('product', 'public');

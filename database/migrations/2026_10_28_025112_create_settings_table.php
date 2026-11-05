@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('settings', function (Blueprint $table) {
-            $table->id();
-            $table->string('key')->unique();
-            $table->longText('value')->nullable();
-            $table->string('label');
-            $table->string('group')->default('general');
-            $table->string('type')->default('type');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('settings')) {
+            Schema::create('settings', function (Blueprint $table) {
+                $table->id();
+                $table->string('key');
+                $table->longText('value')->nullable();
+                $table->string('label');
+                $table->string('group')->default('general');
+                $table->string('type')->default('type');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

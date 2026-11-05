@@ -31,11 +31,12 @@
     </div>
     <div class="mb-3">
         <label for="">Deskripsi Singkat</label>
-        <input type="number" name="brief_description" class="form-control">
+        <input type="text" name="brief_description" class="form-control">
     </div>
     <div class="mb-3">
         <label for="">Deskripsi</label>
-        <textarea name="description" id="editor" cols="30" rows="10" class="form-control"></textarea>
+        <textarea name="description" id="" cols="30" rows="10" class="d-none"></textarea>
+        <div id="editor">{!! old('description') !!}</div>
     </div>
 
     <div class="row">

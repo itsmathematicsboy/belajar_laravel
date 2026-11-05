@@ -39,8 +39,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/settings', [\App\Http\Controllers\SettingController::class, 'index'])->name('settings');
     Route::post('/settings', [\App\Http\Controllers\SettingController::class, 'update'])->name('settings.update');
-
 });
 
 Route::get('/', [HomeController::class, 'index']);
-Route::get('/category/{slug}', [\App\Http\Controllers\CatalogController::class], 'category')->name('category.show');
+Route::get('/category/{slug}', [\App\Http\Controllers\CatalogController::class, 'category'],)->name('category.show');
+Route::get('/product/{slug}', [\App\Http\Controllers\CatalogController::class, 'product'],)->name('product.show');

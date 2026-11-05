@@ -22,8 +22,8 @@
     <!-- Main Design System & Custom Stylesheet -->
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
 
-    {{-- Quill --}}
-    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+    <!-- quill -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
 </head>
 
 <body>
@@ -126,11 +126,16 @@
     <!-- Local dashboard interactions controller -->
     <script src="{{ asset('assets/js/dashboard.js') }}"></script>
 
-    {{-- Quill --}}
+
+    <!-- quill -->
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
     <script>
         const quill = new Quill('#editor', {
             theme: 'snow'
+        });
+        quill.on('text-change', function(delta, oldDelta, source) {
+            document.querySelector("textarea[name='description']").value = quill.root.innerHTML;
+            console.log("textarea", quill.root.innerHTML);
         });
     </script>
 </body>
