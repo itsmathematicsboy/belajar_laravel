@@ -7,7 +7,7 @@
     @csrf
     <div class="mb-3">
         <label for="">Nama Produk</label>
-        <input type="text" name="" class="form-control" required>
+        <input type="text" name="name" class="form-control" required>
     </div>
 
     <div class="row">
@@ -54,30 +54,42 @@
         </div>
         <div class="mb-3">
             <label for="">Harga HVS</label>
-            <input type="number" name="price_hvs" class="form-control">
+            <input type="number" name="price_art_hvs" class="form-control">
         </div>
     </div>
     <div class="row">
         <div class="mb-3">
             <label for="" class="form-label">Harga Laminating DOF</label>
-            <input type="text" name="price_dof" class="form-control">
+            <input type="number" name="price_art_dof" class="form-control">
         </div>
         <div class="mb-3">
             <label for="" class="form-label">Harga Laminating Glossy</label>
-            <input type="number" name="price_glossy" class="form-control">
+            <input type="number" name="price_art_glossy" class="form-control">
         </div>
         <div class="mb-3">
             <label for="" class="form-label">Harga Potong (Min 5x5 cm)</label>
             <input type="number" name="cutting_price" class="form-control">
         </div>
-        <div class="mb-3">
+        <!-- <div class="mb-3">
             <label for="" class="form-label">Harga HVS</label>
             <input type="number" name="price_hvs" class="form-control">
-        </div>
+        </div> -->
     </div>
     <div class="mb-3">
         <label for="">Upload Gambar</label>
-        <input type="file" name="image" class="form-control">
+        <div class="row align-items-center mb-2 image-input-row">
+            <div class="col-md-5">
+                <input type="file" name="images[]" class="form-control">
+            </div>
+            <div class="col-md-6">
+                <input type="text" name="alt[]" class="form-control">
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-danger w-100" onclick="removeImageInput(this)" disabled>X</button>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary w-30" id="add-image-btn">+ Tambah Gambar
+            Lain</button>
     </div>
     <div class="mb-3">
         <button type="submit" class="btn-custom btn-custom-primary">Simpan</button>

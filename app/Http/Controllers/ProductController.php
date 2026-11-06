@@ -19,7 +19,7 @@ class ProductController extends Controller
         $title = "Manajemen Produk || PPKD Sticker";
         $products = Product::with('category')->get();
         $category = Category::with('products')->get();
-        return view('admin.product.index', compact('title','products'));
+        return view('admin.product.index', compact('title', 'products'));
     }
 
     /**
@@ -29,7 +29,7 @@ class ProductController extends Controller
     {
         $title = "Tambah Produk || PPKD Sticker";
         $categories = Category::all();
-        return view('admin.product.create', compact('title','categories'));
+        return view('admin.product.create', compact('title', 'categories'));
     }
 
     /**
@@ -39,7 +39,7 @@ class ProductController extends Controller
     {
         //
         $validated = $request->validate([
-            'category_id'=> 'required|exists:categories_id',
+            'category_id' => 'required|exists:categories,id',
             'image' => 'nullable|image|mimes:png,jpg,jpeg,gif|max:2640',
             'name' => 'required|string|max:60',
             // 'stock'=>'required|integer',
@@ -51,61 +51,84 @@ class ProductController extends Controller
             'alt.*' => 'nullable|array|max:255',
             'price' => 'required|integer',
             'slug' => 'nullable|string|unique:products,slug',
-            'price_art_cartoon'=> 'nullable|numeric',
-            'price_art_paper'=> 'nullable|numeric',
-            'price_art_hvs'=> 'nullable|numeric',
-            'price_art_dof'=> 'nullable|numeric',
-            'price_art_glossy'=> 'nullable|numeric',
-            'cutting_price'=>'nullable|numeric',
-            'brief_description'=>'nullable|string',
-            'description'=>'nullable|string',
+            'price_art_cartoon' => 'nullable|numeric',
+            'price_art_paper' => 'nullable|numeric',
+            'price_art_hvs' => 'nullable|numeric',
+            'price_art_dof' => 'nullable|numeric',
+            'price_art_glossy' => 'nullable|numeric',
+            'cutting_price' => 'nullable|numeric',
+            'brief_description' => 'nullable|string',
+            'description' => 'nullable|string',
         ]);
 
-        DB::transaction(function() use($request, $validated){
+        DB::transaction(function () use ($request, $validated) {
+            $slug = !empty($validated['slug']) ? Str::slug($validated['slug']) :
+                Str::slug($validated['name']);
+
             $product = Product::create([
-                'category_id' =>$request->$validated['category_id'],
-                'name'=>$request->$validated['name'],
+                'category_id' => $validated['category_id'],
+                'name' => $validated['name'],
+                'slug' => $slug,
+                'price' => $validated['price'],
+                'price_art_cartoon' => $validated['price_art_cartoon'],
+                'price_art_paper' => $validated['price_art_paper'],
+                'price_art_hvs' => $validated['price_art_hvs'] ?? 0,
+                'price_art_dof' => $validated['price_art_dof'] ?? 0,
+                'price_art_glossy' => $validated['price_art_glossy'] ?? 0,
+                'cutting_price' => $validated['cutting_price'],
+                'brief_decsription' => $validated['brief_description'],
+                'description' => $validated['description'],
             ]);
 
-            if ($request->hasFile('images')){
+            if ($request->hasFile('images')) {
                 $imageData = [];
+                $firstImageData = null;
 
-                foreach($request->file('images') as $key => $file){
+                foreach ($request->file('images') as $key => $file) {
                     $path = $file->store('product', 'public');
 
+                    if ($key === 0) {
+                        $firstImageData = $path;
+                    }
+
                     $imageData[] = [
-                        'path'=>$path,
-                        'alt'=> $request->input('alt.{$key}') ?? $product->name,
-                        'sort_order'=>$key + 1,
+                        'path' => $path,
+                        'alt' => $request->input('alt.{$key}') ?? $product->name,
+                        'sort_order' => $key + 1,
                     ];
                 }
                 $product->images()->createMany($imageData);
+                if ($firstImageData) {
+                    $product->update([
+                        'image' => $firstImageData
+                    ]);
+                }
             }
         });
 
-        $validated['slug'] = $validated['slug'] ? Str::slug($validated['slug']) : Str::slug($validated['name']);
+        // $validated['slug'] = $validated['slug'] ? Str::slug($validated['slug']) : Str::slug($validated['name']);
 
-        $imagePath = null;
-        if($request->image){
-            $imagePath = $request->file('image')->store('product', 'public');
-        }
+        // $imagePath = null;
+        // if ($request->image) {
+        //     $imagePath = $request->file('image')->store('product', 'public');
+        // }
 
-        Product::create([
-            'category_id' => $request->category_id,
-            'image' => $request->$imagePath,
-            'name' => $request->name,
-            // 'stock' => $request->stock,
-            'price' => $request->price,
-            'price_art_cartoon' => $request->price_art_cartoon,
-            'price_art_paper' => $request->price_art_paper,
-            'price_hvs'=>$request->price_hvs,
-            'price_dof'=>$request->price_glossy,
-            'cutting_price'=>$request->cutting_price,
-            'brief_description'=>$request->brief_description,
-            'description'=>$request->description
-        ]);
+        // Product::create([
+        //     'category_id' => $request->category_id,
+        //     'image' => $request->$imagePath,
+        //     'name' => $request->name,
+        //     // 'stock' => $request->stock,
+        //     'price' => $request->price,
+        //     'price_art_cartoon' => $request->price_art_cartoon,
+        //     'price_art_paper' => $request->price_art_paper,
+        //     'price_hvs' => $request->price_hvs,
+        //     'price_dof' => $request->price_glossy,
+        //     'cutting_price' => $request->cutting_price,
+        //     'brief_description' => $request->brief_description,
+        //     'description' => $request->description
+        // ]);
         return redirect()->route('admin.product.index')
-        ->with('success', 'Produk berhasil ditambahkan');
+            ->with('success', 'Produk berhasil ditambahkan');
     }
 
     /**
@@ -129,7 +152,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        if($request->hasFile('img')){
+        if ($request->hasFile('img')) {
             Storage::disk('public')->delete($product->img);
         }
     }
@@ -142,7 +165,7 @@ class ProductController extends Controller
         //
         $product = Product::find($id);
 
-        if($product->img){
+        if ($product->img) {
             Storage::disk('public')->delete($product->img);
         }
 

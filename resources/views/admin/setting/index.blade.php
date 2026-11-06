@@ -54,7 +54,7 @@ logo, kontak dan informasi profil')
                 <input type="file" class="form-control" name="site_logo" value="">
             </div>
             <div>
-                <img width="100" src="{{ asset('storage/'.$setting['site_logo']->value) }}" alt="Site Logo">
+                <img width="100" src="{{ asset('storage/' . $setting['site_logo']->value) }}" alt="Site Logo">
             </div>
         </div>
 
