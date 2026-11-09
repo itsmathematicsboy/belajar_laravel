@@ -16,6 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <!-- Core Theme & Layout Styles -->
     <link href="{{ asset('viewtouser/primagraphia-web/assets/css/style.css') }}" rel="stylesheet" />
+    <link href="{{ asset('viewtouser/primagraphia-web/assets/css/faq.css') }}" rel="stylesheet" />
 </head>
 
 <body>
@@ -36,6 +37,7 @@
     <!-- END: FloatingWhatsApp -->
     <!-- Bootstrap 5 Bundle JS (Includes Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('viewtouser/primagraphia-web/assets/js/faq.js') }}"></script>
 </body>
 
 </html>
