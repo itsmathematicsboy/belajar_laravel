@@ -21,7 +21,7 @@
                     <a class="nav-top-link" href="outlet.html"><i class="bi bi-geo-alt"></i> Outlet Kami</a>
                     <a class="nav-top-link" href="{{ route('faq.index') }}"><i class="bi bi-question-circle"></i> FAQ</a>
                     <a class="nav-top-link" href="{{ route('contact.index') }}"><i class="bi bi-telephone"></i> Hubungi Kami</a>
-                    <a class="nav-top-link" href="blog.index"><i class="bi bi-journal-text"></i> Blog</a>
+                    <a class="nav-top-link" href="{{ route('blog.index') }}"><i class="bi bi-journal-text"></i> Blog</a>
                 </nav>
             </div>
             <div class="d-flex align-items-center gap-3 text-muted" style="font-size: 0.8rem;">

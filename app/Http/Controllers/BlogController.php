@@ -27,7 +27,7 @@ class BlogController extends Controller
      */
     public function create()
     {
-        $title = "Tambah Produk || PPKD Sticker";
+        $title = "Tambah Blog || PPKD Sticker";
         $categories = CategoryBlog::all();
         return view('admin.blog.create', compact('title', 'categories'));
     }
@@ -40,7 +40,7 @@ class BlogController extends Controller
         //
         $validated = $request->validate([
             'name' => 'required|string',
-            'blog_category_id' => 'nullable|exists:categories_blogs,id',
+            'blog_category_id' => 'nullable|exists:category_blogs,id',
             'image' => 'nullable|image|mimes:png,jpg,jpeg,gif|max:2640',
             'slug' => 'nullable|string|unique:category_blogs,slug',
             'content' => 'nullable|string',
@@ -53,6 +53,7 @@ class BlogController extends Controller
             }
 
             $validated['slug'] = $validated['slug'] ? Str::slug($validated['slug']) : Str::slug($validated['name']);
+
             Blog::create($validated);
 
         return redirect()->route('admin.blog.index')
@@ -70,10 +71,11 @@ class BlogController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Blog $blog)
     {
         $title = "Ubah Blog || PPKD Sticker";
-        return view('admin.blog.edit', compact('blog', 'title'));
+        $category = CategoryBlog::all();
+        return view('admin.blog.edit', compact('title', 'blog', 'category'));
     }
 
     /**

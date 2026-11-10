@@ -9,6 +9,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryBlogController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\PageController;
 
 
 
@@ -30,19 +31,25 @@ Route::get('/bagi', [BelajarController::class, 'bagi'])->name('bagi');
 Route::post('/actionBagi', [BelajarController::class, 'actionBagi'])->name('actionBagi');
 
 // prefix
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/login', [\App\Http\Controllers\LoginController::class, 'login']);
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+    Route::get('/login', [\App\Http\Controllers\LoginController::class, 'login'])->name('login');
     Route::post('/actionLogin', [\App\Http\Controllers\LoginController::class, 'actionLogin'])->name('actionLogin');
 
-    Route::resource('dashboard', DashboardController::class);
-    Route::resource('user', UserController::class);
-    Route::resource('category', CategoryController::class);
-    Route::resource('product', ProductController::class);
-    Route::resource('category_blog',CategoryBlogController::class);
-    Route::resource('blog', BlogController::class);
+    Route::middleware(['auth'])->group(function(){
+        Route::resource('dashboard', DashboardController::class);
+        Route::resource('user', UserController::class);
+        Route::resource('category', CategoryController::class);
+        Route::resource('product', ProductController::class);
+        Route::resource('category_blog',CategoryBlogController::class);
 
-    Route::get('/settings', [\App\Http\Controllers\SettingController::class, 'index'])->name('settings');
-    Route::post('/settings', [\App\Http\Controllers\SettingController::class, 'update'])->name('settings.update');
+        Route::get('/settings', [\App\Http\Controllers\SettingController::class, 'index'])->name('settings');
+        Route::post('/settings', [\App\Http\Controllers\SettingController::class, 'update'])->name('settings.update');
+        Route::resource('blog', BlogController::class);
+
+        // Route logout (get)
+        Route::get('logout', [App\Http\Controllers\LoginController::class, 'logout'])->name('logout');
+    });
+
 });
 
 Route::get('/', [HomeController::class, 'index']);
@@ -52,3 +59,5 @@ Route::get('/product/{slug}', [\App\Http\Controllers\CatalogController::class, '
 
 Route::get('faq', [\App\Http\Controllers\PageController::class, 'faq'],)->name('faq.index');
 Route::get('contact', [\App\Http\Controllers\PageController::class, 'contact'],)->name('contact.index');
+Route::get('blog', [PageController::class, 'blog'])->name('blog.index');
+Route::post('blog/{slug}', [PageController::class, 'showBlog'])->name('blog.show');

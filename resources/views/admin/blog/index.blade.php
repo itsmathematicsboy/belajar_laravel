@@ -26,11 +26,12 @@
             @foreach($blogs as $key => $data)
             <tr>
                 <td>{{ $key += 1  }}</td>
-                <td><img src="{{'storage/' . $data->cover_path ?? ''}}" alt=""></td>
+                <td><img src="{{asset('storage/' . $data->cover_path ?? '')}}" width="100" alt=""></td>
                 <td>{{ $data->name ?? '' }}</td>
                 <td>{{ $data->category->name ?? '' }}</td>
                 <td>{{ $data->slug ?? '' }}</td>
                 <td>{{ $data->brief_description ?? '' }}</td>
+                <td>{{ $data->author ?? '' }}</td>
                 <td>
                     <a class="table-btn-action" title="Edit"
                         href="{{ route('admin.blog.edit', $data->id) }}">
